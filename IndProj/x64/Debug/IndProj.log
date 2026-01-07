@@ -1,0 +1,9 @@
+﻿  func.cpp
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(39,49): warning C4101: 'e': unreferenced local variable
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(48,45): warning C4101: 'e': unreferenced local variable
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(140,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(240,31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(254,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(255,43): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(283,36): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  IndProj.vcxproj -> C:\Users\Пользователь\Desktop\labs\IndProj\x64\Debug\IndProj.exe
