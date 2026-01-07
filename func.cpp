@@ -7,9 +7,10 @@
 #include <chrono>
 #include <thread>
 #include <random>
+#include <cmath>
+#include <iomanip>
 #include "header.h"
 
-using namespace std;
 
 // Объявление глобальной переменной баланса
 int current_balance = 1000;
@@ -17,57 +18,14 @@ int current_balance = 1000;
 // Константа для имени файла сохранения
 const std::string save_file_name = "save.txt";
 
-// Функция для инициализации баланса из файла или сброса к заводским настройкам
-/*bool initializeGameState(bool resetToDefault = false) {
-    std::fstream file(save_file_name, std::ios::in | std::ios::out | std::ios::trunc); 
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file: " << save_file_name << std::endl;
-        return false;
-    }
-
-    if (resetToDefault) {
-        file << 1000 << std::endl;
-        current_balance = 1000;
-        std::cout << "Game state reset to default." << std::endl;
-    }
-    else {
-        std::string first_line;
-        if (std::getline(file, first_line)) {
-            try {
-                current_balance = std::stoi(first_line);
-            }
-            catch (const std::invalid_argument& e) {
-                std::cerr << "Error: The first line of the file is not an integer. Resetting to default." << std::endl;
-                file.seekp(0, std::ios::beg);
-                file << 1000 << std::endl;
-                file.close();
-                return initializeGameState(true);
-
-
-            }
-            catch (const std::out_of_range& e) {
-                std::cerr << "Error: The number in the first line is too large. Resetting to default." << std::endl;
-                file.seekp(0, std::ios::beg);
-                file << 1000 << std::endl;
-                file.close();
-                return initializeGameState(true);
-            }
-        }
-        else {
-            std::cout << "Save file is empty. Resetting to default." << std::endl;
-            file.seekp(0, std::ios::beg);
-            file << 1000 << std::endl;
-
-            file.close();
-            return initializeGameState(true);
-
-        }
-    }
-
-    file.close();
-    return true;
+void clearScreen() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
-*/
+
 bool loadGameState() {
     std::ifstream file(save_file_name); // Открываем только для чтения
     if (!file.is_open()) {
@@ -83,18 +41,18 @@ bool loadGameState() {
         }
         catch (const std::invalid_argument& e) {
             std::cerr << "Error: The first line of the file is not an integer. Resetting to default." << std::endl;
-            file.close(); // Закрываем файл перед сбросом
+            file.close(); 
             return resetGameState();
         }
         catch (const std::out_of_range& e) {
             std::cerr << "Error: The number in the first line is too large. Resetting to default." << std::endl;
-            file.close(); // Закрываем файл перед сбросом
+            file.close(); 
             return resetGameState();
         }
     }
     else {
         std::cout << "Save file is empty. Resetting to default." << std::endl;
-        file.close(); // Закрываем файл перед сбросом
+        file.close(); 
         return resetGameState();
     }
 
@@ -105,7 +63,7 @@ bool loadGameState() {
 
 // Функция для сброса состояния игры в начальное состояние
 bool resetGameState() {
-    std::ofstream file(save_file_name, std::ios::trunc); // Открываем с trunc для очистки
+    std::ofstream file(save_file_name, std::ios::trunc); 
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file for writing: " << save_file_name << std::endl;
         return false;
@@ -114,6 +72,7 @@ bool resetGameState() {
     file << 1000 << std::endl;
     current_balance = 1000;
     file.close();
+    clearScreen();
     std::cout << "Game state reset to default." << std::endl;
     return true;
 }
@@ -131,7 +90,7 @@ bool updateSaveFile(int balance_change) {
 
     file.seekp(0, std::ios::beg);
     file << current_balance << std::endl;
-    file.flush(); //Сброс буфера
+    file.flush(); 
 
     // Перемещаемся в конец файла для добавления записи об изменении баланса
     file.seekp(0, std::ios::end);
@@ -151,16 +110,10 @@ bool updateSaveFile(int balance_change) {
     return true;
 }
 
-void clearScreen() {
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
-}
+
 
 // ==================== СЛОТ-МАШИНА ====================
-void findCluster(const vector<vector<char>>& reels, int row, int col, char symbol, vector<pair<int, int>>& cluster, vector<vector<bool>>& visited, const vector<int>& megawaysCols) {
+void findCluster(const std::vector<std::vector<char>>& reels, int row, int col, char symbol, std::vector<std::pair<int, int>>& cluster, std::vector<std::vector<bool>>& visited, const std::vector<int>& megawaysCols) {
     int ROWS = static_cast<int>(reels.size());
     int COLS = static_cast<int>(reels[0].size());
 
@@ -179,7 +132,7 @@ void findCluster(const vector<vector<char>>& reels, int row, int col, char symbo
     findCluster(reels, row, col - 1, symbol, cluster, visited, megawaysCols); // Влево
 }
 
-bool isCluster(const vector<vector<char>>& reels, int row, int col, char symbol, vector<pair<int, int>>& cluster, vector<vector<bool>>& visited, const vector<int>& megawaysCols) {
+bool isCluster(const std::vector<std::vector<char>>& reels, int row, int col, char symbol, std::vector<std::pair<int, int>>& cluster, std::vector<std::vector<bool>>& visited, const std::vector<int>& megawaysCols) {
     cluster.clear();
     findCluster(reels, row, col, symbol, cluster, visited, megawaysCols);
     return !cluster.empty();
@@ -190,7 +143,7 @@ int playSlots() {
 
     const int ROWS = 5;
     const int COLS = 6;
-    const string SYMBOLS = "ABCDEF";
+    const std::string SYMBOLS = "ABCDEF";
     const int MIN_CLUSTER_SIZE = 3;
 
     double scatterProb = 0.05;
@@ -201,41 +154,43 @@ int playSlots() {
 
     // Проверка баланса
     if (current_balance < 10) {
-        cout << "Not enough carrots! Minimum bet: 10\n";
-        cout << "Wanna reset game stats? (y/n): ";
+        std::cout << "Seems like somebody is out of carrots(" << std::endl;
+        std::cout << "Minimum bet: 10" << std::endl;
+        std::cout << "Wanna reset game stats? (y/n): ";
         char confirm;
-        cin >> confirm;
+        std::cin >> confirm;
         if (confirm == 'y') {
-            if (!initializeGameState(true)) {
-                cerr << "Unable to reset game stats!" << endl;
+            if (!resetGameState()) {
+                std::cerr << "Unable to reset game stats!" << std::endl;
             }
             else {
-                cout << "Game progress reset completed" << endl;
+                std::cout << "Game progress reset completed" << std::endl;
             }
         }
         else {
-            cout << "Reset cancelled" << endl;
+            std::cout << "Reset cancelled" << std::endl;
         }
-        return 0; // Важно: выходим из функции, если баланс = 0
+        return 0; // Выходим из функции, если баланс = 0
     }
 
     int bet;
-    cout << "Enter your bet: ";
-    cin >> bet;
-    cout << "Your bet is " << bet << " carrots" << endl;
+    std::cout << "Enter your bet(10-" << current_balance << "): ";
+    std::cin >> bet;
+    std::cout << "Your bet is " << bet << " carrots" << std::endl;
 
     // Запрос ставки
     while (bet <= 0 || bet > current_balance) {
-        cout << "Not enough carrots!" << endl << "Your bet must be between 10 and " << current_balance << " carrots or enter 0 to exit" << endl;
-        cin >> bet;
+        std::cout << "Not enough carrots!" << std::endl << "Your bet must be between 10 and " << current_balance << " carrots or enter 0 to exit" << std::endl;
+        std::cin >> bet;
         if (bet == 0) {
+            clearScreen();
             return 0;
         }
     }
     updateSaveFile(-bet);
 
     // Пошло-поехало
-    vector<int> megawaysCols(COLS);
+    std::vector<int> megawaysCols(COLS);
     int totalWays = 1;
     for (int i = 0; i < COLS; ++i) {
         megawaysCols[i] = (rand() % (ROWS - 1)) + 2; // Min 2, Max ROWS
@@ -243,8 +198,8 @@ int playSlots() {
     }
 
     // Генерация символов
-    vector<vector<char>> reels(ROWS, vector<char>(COLS, ' '));
-    vector<vector<char>> megawaysReels(ROWS, vector<char>(COLS, ' '));
+    std::vector<std::vector<char>> reels(ROWS, std::vector<char>(COLS, ' '));
+    std::vector<std::vector<char>> megawaysReels(ROWS, std::vector<char>(COLS, ' '));
     for (int col = 0; col < COLS; ++col) {
         for (int row = 0; row < megawaysCols[col]; ++row) {
             double randomValue = (double)rand() / RAND_MAX;
@@ -261,18 +216,19 @@ int playSlots() {
     }
 
     // Вывод
-    cout << "--------------------MEGAWAYS-------------------" << endl;
+    clearScreen();
+    std::cout << "--------------------MEGAWAYS-------------------" << std::endl;
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
-            cout << megawaysReels[i][j] << " ";
+            std::cout << megawaysReels[i][j] << " ";
         }
-        cout << endl;
+        std::cout << std::endl;
     }
-    cout << "--------------------------------------------------" << endl;
+    std::cout << "--------------------------------------------------" << std::endl;
 
     // Рассчет выигрыша
     int winnings = 0;
-    vector<vector<bool>> visited(ROWS, vector<bool>(COLS, false));
+    std::vector<std::vector<bool>> visited(ROWS, std::vector<bool>(COLS, false));
 
     // Скаттер
     int scatterWinnings = 0;
@@ -287,7 +243,7 @@ int playSlots() {
     }
     if (scatterCount >= 3) {
         scatterWinnings = bet * (scatterCount * SCATTER_PAYOUT_MULTIPLIER);
-        cout << "Scatter winning! (" << scatterCount << " symbols): " << scatterWinnings << endl;
+        std::cout << "Scatter winning! (" << scatterCount << " symbols): " << scatterWinnings << std::endl;
         winnings += scatterWinnings;
     }
 
@@ -295,14 +251,14 @@ int playSlots() {
     for (int row = 0; row < ROWS; ++row) {
         for (int col = 0; col < COLS; ++col) {
             if (!visited[row][col]) {
-                vector<pair<int, int>> cluster;
+                std::vector<std::pair<int, int>> cluster;
                 char symbol = megawaysReels[row][col];
                 int clusterWinnings = 0;
 
                 if (row < megawaysCols[col] && isCluster(megawaysReels, row, col, symbol, cluster, visited, megawaysCols) && cluster.size() >= MIN_CLUSTER_SIZE) {
                     int clusterSize = cluster.size() - MIN_CLUSTER_SIZE;
                     clusterWinnings = bet * CLUSTER_PAYOUT_MULTIPLIERS[clusterSize];
-                    cout << "Cluster - winning! (Size: " << cluster.size() << " of symbol: " << symbol << "): " << clusterWinnings << endl;
+                    std::cout << "Cluster - winning! (Size: " << cluster.size() << " of symbol: " << symbol << "): " << clusterWinnings << std::endl;
                     winnings += clusterWinnings;
 
                     for (const auto& cell : cluster) {
@@ -312,13 +268,13 @@ int playSlots() {
             }
         }
     }
-
+    std::cout << std::endl;
     // Линейный выигрыш
     for (int row = 0; row < ROWS; ++row) {
         if (megawaysCols[0] > row && !visited[row][0]) { // Проверяем, что строка не часть кластера
             char firstSymbol = megawaysReels[row][0];
             int winningSymbols = 1;
-            bool isLine = true;  // Флаг
+            bool isLine = true;  
             int lineWinnings = 0;
             for (int col = 1; col < COLS; ++col) {
                 if (megawaysCols[col] <= row || megawaysReels[row][col] != firstSymbol || visited[row][col]) { //проверяем посещение
@@ -330,16 +286,98 @@ int playSlots() {
 
             if (winningSymbols >= 3 && isLine) { // Проверка линейного выигрыша и что это не часть кластера
                 lineWinnings = bet * LINE_PAYOUT_MULTIPLIERS[winningSymbols - 3];
-                cout << "Big line in " << row + 1 << " ( " << winningSymbols << "of symbol): " << lineWinnings << endl;
+                std::cout << "Winning line in " << row + 1 << " ( " << winningSymbols << "of symbol): " << lineWinnings << std::endl;
                 winnings += lineWinnings;
             }
         }
     }
-    cout << "Total winnings: " << winnings << " carrots" << endl;
+    if (winnings == 0) {
+        std::cout << "Total winnings: " << winnings << " carrots. Unlucky for you" << std::endl;
+    }
+    else if (winnings<=bet){
+        std::cout << "Total winnings: " << winnings << " carrots. Better that nothing!" << std::endl;
+    }
+    else if (winnings>bet*2) {
+        std::cout << "BIG WIN OF: " << winnings << " CARROTS!!! Your luck is incredible!" << std::endl;
+    }
+    else if (winnings > bet) {
+        std::cout << "Total winnings: " << winnings << " carrots! It is your day!" << std::endl;
+    }
+    std::cout << std::endl;
     updateSaveFile(winnings);
 
 
     return winnings;
+}
+
+void displayBetHistory() {
+    std::ifstream saveFile(save_file_name);
+    if (!saveFile.is_open()) {
+        std::cerr << "Error: Could not open save file '" << save_file_name << "'." << std::endl;
+        return;
+    }
+
+    std::string line;
+    // Пропускаем первую строку (баланс)
+    std::getline(saveFile, line);
+
+    int stake;
+    int winnings;
+    bool stakeFound = false;
+    bool errorFound = false;
+    std::vector<int> betVec;
+    std::vector<int> winVec;
+
+
+    while (std::getline(saveFile, line)) {
+        if (line.empty()) {
+            continue;
+        }
+        try {
+            int value = std::stoi(line);
+
+            if (value < 0) {
+                if (stakeFound) {
+                    std::cerr << "Error: Multiple stakes found consecutively in save file(Stake: " << stake << ", next: " << value << "). Save file might be corrupted. Try resetting game data" << std::endl;
+                    errorFound = true;
+                    break;
+                }
+                stake = value;
+                betVec.push_back(stake);
+                stakeFound = true;
+            }
+            else if (value >= 0) {
+                if (!stakeFound) {
+                    if (!winVec.empty() && winVec.back() > 0) {
+                        std::cerr << "Error: Multiple winnings found consecutively in save file. Save file might be corrupted. Try resetting game data" << std::endl;
+                        errorFound = true;
+                        break;
+                    }
+                    std::cerr << "Error: Winnings found before stake in save file. Save file might be corrupted. Try resetting game data" << std::endl;
+                    errorFound = true;
+                    break;
+                }
+                winnings = value;
+                winVec.push_back(winnings);
+                stakeFound = false;
+            }
+        }
+        catch (const std::invalid_argument& e) {
+            std::cerr << "Error: Invalid data in save file. Save file might be corrupted. Try resetting game data" << std::endl;
+            errorFound = true;
+            break;
+        }
+    }
+    if (!errorFound) {
+        if (stakeFound) {
+            std::cerr << "Error: Stake found without winnings at the end of the file. Save file might be corrupted." << std::endl;
+        }
+        for (size_t i = 0; i < betVec.size(); ++i) {
+            std::cout << std::left << "Bet: " << std::setw(20) << abs(betVec[i]) << "Winnings: " << std::setw(20) << winVec[i] << std::endl;
+        }
+    }
+    saveFile.close();
+
 }
 
 
@@ -351,29 +389,31 @@ int startGame() {
 
     std::cout << "Welcome to the Slot Simulator!" << std::endl;
     std::cout << "Here you can win a lot of fresh yummy carrots" << std::endl;
-    char choice;
+    int choice;
 
     do {
         std::cout << "Current balance: " << current_balance << " carrots" << std::endl;
         std::cout << "1. Play Slots" << std::endl;
-        std::cout << "2. Save and Exit" << std::endl;
-        std::cout << "3. Reset Game (and Clear Save)" << std::endl;
-        std::cout << "Enter your choice (1, 2, or 3): ";
+        std::cout << "2. Display bet history" << std::endl;
+        std::cout << "3. Save and Exit" << std::endl;
+        std::cout << "4. Reset Game (and Clear Save)" << std::endl;
+        std::cout << "Enter your choice (1 - 4): ";
         std::cin >> choice;
-
         switch (choice) {
-        case '1':
+        case 1:
+            clearScreen();
             playSlots();
             break;
-        case '2':
-            if (updateSaveFile(0)) { // save and exit to save the final balance
-                std::cout << "Saving game and exiting..." << std::endl;
-            }
-            else {
-                std::cerr << "Error: Could not save the game" << std::endl;
-            }
+        case 2:
+            clearScreen();
+            displayBetHistory();
+            std::cout << std::endl;
             break;
-        case '3':
+        case 3:
+            clearScreen();
+            std::cout << "Saving game and exiting..." << std::endl;
+            break;
+        case 4:
             std::cout << "Are you sure you want to reset the game? (y/n): ";
             char confirm;
             std::cin >> confirm;
@@ -387,10 +427,12 @@ int startGame() {
             }
             break;
         default:
-            std::cout << "Invalid choice. Please enter 1, 2, or 3" << std::endl;
-
+            clearScreen();
+            std::cout << "Invalid input. Please enter a number from 1 to 4: " << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
-    } while (choice != '2');
+    } while (choice != 3);
 
     return 0;
 }

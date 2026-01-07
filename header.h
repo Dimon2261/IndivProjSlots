@@ -1,3 +1,4 @@
 bool updateSaveFile(int balance_change);
-bool initializeGameState(bool resetToDefault);
+bool loadGameState();
+bool resetGameState();
 int startGame();
