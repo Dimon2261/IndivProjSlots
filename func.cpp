@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
@@ -12,10 +12,10 @@
 #include "header.h"
 
 
-// Объявление глобальной переменной баланса
+// РћР±СЉСЏРІР»РµРЅРёРµ РіР»РѕР±Р°Р»СЊРЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ Р±Р°Р»Р°РЅСЃР°
 int current_balance = 1000;
 
-// Константа для имени файла сохранения
+// РљРѕРЅСЃС‚Р°РЅС‚Р° РґР»СЏ РёРјРµРЅРё С„Р°Р№Р»Р° СЃРѕС…СЂР°РЅРµРЅРёСЏ
 const std::string save_file_name = "save.txt";
 
 void clearScreen() {
@@ -27,10 +27,10 @@ void clearScreen() {
 }
 
 bool loadGameState() {
-    std::ifstream file(save_file_name); // Открываем только для чтения
+    std::ifstream file(save_file_name); // РћС‚РєСЂС‹РІР°РµРј С‚РѕР»СЊРєРѕ РґР»СЏ С‡С‚РµРЅРёСЏ
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file for reading: " << save_file_name << std::endl;
-        // Если файла нет, сбрасываем игру в начальное состояние
+        // Р•СЃР»Рё С„Р°Р№Р»Р° РЅРµС‚, СЃР±СЂР°СЃС‹РІР°РµРј РёРіСЂСѓ РІ РЅР°С‡Р°Р»СЊРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
         return resetGameState();
     }
 
@@ -41,18 +41,18 @@ bool loadGameState() {
         }
         catch (const std::invalid_argument& e) {
             std::cerr << "Error: The first line of the file is not an integer. Resetting to default." << std::endl;
-            file.close(); 
+            file.close();
             return resetGameState();
         }
         catch (const std::out_of_range& e) {
             std::cerr << "Error: The number in the first line is too large. Resetting to default." << std::endl;
-            file.close(); 
+            file.close();
             return resetGameState();
         }
     }
     else {
         std::cout << "Save file is empty. Resetting to default." << std::endl;
-        file.close(); 
+        file.close();
         return resetGameState();
     }
 
@@ -61,9 +61,9 @@ bool loadGameState() {
     return true;
 }
 
-// Функция для сброса состояния игры в начальное состояние
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЃР±СЂРѕСЃР° СЃРѕСЃС‚РѕСЏРЅРёСЏ РёРіСЂС‹ РІ РЅР°С‡Р°Р»СЊРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
 bool resetGameState() {
-    std::ofstream file(save_file_name, std::ios::trunc); 
+    std::ofstream file(save_file_name, std::ios::trunc);
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file for writing: " << save_file_name << std::endl;
         return false;
@@ -77,7 +77,7 @@ bool resetGameState() {
     return true;
 }
 
-// Функция для обновления файла сохранения. Принимает на вход ИЗМНЕНИЕ баланса + записывает последнюю строчку игры в историю
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ С„Р°Р№Р»Р° СЃРѕС…СЂР°РЅРµРЅРёСЏ. РџСЂРёРЅРёРјР°РµС‚ РЅР° РІС…РѕРґ РР—РњРќР•РќРР• Р±Р°Р»Р°РЅСЃР° + Р·Р°РїРёСЃС‹РІР°РµС‚ РїРѕСЃР»РµРґРЅСЋСЋ СЃС‚СЂРѕС‡РєСѓ РёРіСЂС‹ РІ РёСЃС‚РѕСЂРёСЋ
 bool updateSaveFile(int balance_change) {
     std::fstream file(save_file_name, std::ios::in | std::ios::out);
 
@@ -90,9 +90,9 @@ bool updateSaveFile(int balance_change) {
 
     file.seekp(0, std::ios::beg);
     file << current_balance << std::endl;
-    file.flush(); 
+    file.flush();
 
-    // Перемещаемся в конец файла для добавления записи об изменении баланса
+    // РџРµСЂРµРјРµС‰Р°РµРјСЃСЏ РІ РєРѕРЅРµС† С„Р°Р№Р»Р° РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ Р·Р°РїРёСЃРё РѕР± РёР·РјРµРЅРµРЅРёРё Р±Р°Р»Р°РЅСЃР°
     file.seekp(0, std::ios::end);
 
     if (balance_change > 0) {
@@ -112,12 +112,12 @@ bool updateSaveFile(int balance_change) {
 
 
 
-// ==================== СЛОТ-МАШИНА ====================
+// ==================== РЎР›РћРў-РњРђРЁРРќРђ ====================
 void findCluster(const std::vector<std::vector<char>>& reels, int row, int col, char symbol, std::vector<std::pair<int, int>>& cluster, std::vector<std::vector<bool>>& visited, const std::vector<int>& megawaysCols) {
     int ROWS = static_cast<int>(reels.size());
     int COLS = static_cast<int>(reels[0].size());
 
-    // Проверка, находится ли ячейка в допустимых пределах высоты столбца
+    // РџСЂРѕРІРµСЂРєР°, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё СЏС‡РµР№РєР° РІ РґРѕРїСѓСЃС‚РёРјС‹С… РїСЂРµРґРµР»Р°С… РІС‹СЃРѕС‚С‹ СЃС‚РѕР»Р±С†Р°
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS || row >= megawaysCols[col] || visited[row][col] || reels[row][col] != symbol) {
         return;
     }
@@ -125,11 +125,11 @@ void findCluster(const std::vector<std::vector<char>>& reels, int row, int col, 
     visited[row][col] = true;
     cluster.push_back({ row, col });
 
-    // Рекурсивный поиск в соседних ячейках (вверх, вниз, влево, вправо)
-    findCluster(reels, row + 1, col, symbol, cluster, visited, megawaysCols); // Вниз
-    findCluster(reels, row - 1, col, symbol, cluster, visited, megawaysCols); // Вверх
-    findCluster(reels, row, col + 1, symbol, cluster, visited, megawaysCols); // Вправо
-    findCluster(reels, row, col - 1, symbol, cluster, visited, megawaysCols); // Влево
+    // Р РµРєСѓСЂСЃРёРІРЅС‹Р№ РїРѕРёСЃРє РІ СЃРѕСЃРµРґРЅРёС… СЏС‡РµР№РєР°С… (РІРІРµСЂС…, РІРЅРёР·, РІР»РµРІРѕ, РІРїСЂР°РІРѕ)
+    findCluster(reels, row + 1, col, symbol, cluster, visited, megawaysCols); // Р’РЅРёР·
+    findCluster(reels, row - 1, col, symbol, cluster, visited, megawaysCols); // Р’РІРµСЂС…
+    findCluster(reels, row, col + 1, symbol, cluster, visited, megawaysCols); // Р’РїСЂР°РІРѕ
+    findCluster(reels, row, col - 1, symbol, cluster, visited, megawaysCols); // Р’Р»РµРІРѕ
 }
 
 bool isCluster(const std::vector<std::vector<char>>& reels, int row, int col, char symbol, std::vector<std::pair<int, int>>& cluster, std::vector<std::vector<bool>>& visited, const std::vector<int>& megawaysCols) {
@@ -148,11 +148,11 @@ int playSlots() {
 
     double scatterProb = 0.05;
 
-    const double LINE_PAYOUT_MULTIPLIERS[] = { 0, 0.2, 0.5, 1, 2, 5 };   
-    const double CLUSTER_PAYOUT_MULTIPLIERS[] = { 0.5, 0.9, 1.5, 2, 4, 8, 12, 16, 20, 25 };  
-    const double SCATTER_PAYOUT_MULTIPLIER = 0.8;  
+    const double LINE_PAYOUT_MULTIPLIERS[] = { 0, 0.2, 0.5, 1, 2, 5 };
+    const double CLUSTER_PAYOUT_MULTIPLIERS[] = { 0.5, 0.9, 1.5, 2, 4, 8, 12, 16, 20, 25 };
+    const double SCATTER_PAYOUT_MULTIPLIER = 0.8;
 
-    // Проверка баланса
+    // РџСЂРѕРІРµСЂРєР° Р±Р°Р»Р°РЅСЃР°
     if (current_balance < 10) {
         std::cout << "Seems like somebody is out of carrots(" << std::endl;
         std::cout << "Minimum bet: 10" << std::endl;
@@ -170,7 +170,7 @@ int playSlots() {
         else {
             std::cout << "Reset cancelled" << std::endl;
         }
-        return 0; // Выходим из функции, если баланс = 0
+        return 0; // Р’С‹С…РѕРґРёРј РёР· С„СѓРЅРєС†РёРё, РµСЃР»Рё Р±Р°Р»Р°РЅСЃ = 0
     }
 
     int bet;
@@ -178,7 +178,7 @@ int playSlots() {
     std::cin >> bet;
     std::cout << "Your bet is " << bet << " carrots" << std::endl;
 
-    // Запрос ставки
+    // Р—Р°РїСЂРѕСЃ СЃС‚Р°РІРєРё
     while (bet <= 0 || bet > current_balance) {
         std::cout << "Not enough carrots!" << std::endl << "Your bet must be between 10 and " << current_balance << " carrots or enter 0 to exit" << std::endl;
         std::cin >> bet;
@@ -189,7 +189,7 @@ int playSlots() {
     }
     updateSaveFile(-bet);
 
-    // Пошло-поехало
+    // РџРѕС€Р»Рѕ-РїРѕРµС…Р°Р»Рѕ
     std::vector<int> megawaysCols(COLS);
     int totalWays = 1;
     for (int i = 0; i < COLS; ++i) {
@@ -197,7 +197,7 @@ int playSlots() {
         totalWays *= megawaysCols[i];
     }
 
-    // Генерация символов
+    // Р“РµРЅРµСЂР°С†РёСЏ СЃРёРјРІРѕР»РѕРІ
     std::vector<std::vector<char>> reels(ROWS, std::vector<char>(COLS, ' '));
     std::vector<std::vector<char>> megawaysReels(ROWS, std::vector<char>(COLS, ' '));
     for (int col = 0; col < COLS; ++col) {
@@ -215,7 +215,7 @@ int playSlots() {
         }
     }
 
-    // Вывод
+    // Р’С‹РІРѕРґ
     clearScreen();
     std::cout << "--------------------MEGAWAYS-------------------" << std::endl;
     for (int i = 0; i < ROWS; ++i) {
@@ -226,18 +226,18 @@ int playSlots() {
     }
     std::cout << "--------------------------------------------------" << std::endl;
 
-    // Рассчет выигрыша
+    // Р Р°СЃСЃС‡РµС‚ РІС‹РёРіСЂС‹С€Р°
     int winnings = 0;
     std::vector<std::vector<bool>> visited(ROWS, std::vector<bool>(COLS, false));
 
-    // Скаттер
+    // РЎРєР°С‚С‚РµСЂ
     int scatterWinnings = 0;
     int scatterCount = 0;
     for (int row = 0; row < ROWS; ++row) {
         for (int col = 0; col < COLS; ++col) {
             if (megawaysReels[row][col] == 'S') {
                 scatterCount++;
-                visited[row][col] = true; //Помечаем скаттеры как посещенные, чтоб не мешали поиску кластеров и линий
+                visited[row][col] = true; //РџРѕРјРµС‡Р°РµРј СЃРєР°С‚С‚РµСЂС‹ РєР°Рє РїРѕСЃРµС‰РµРЅРЅС‹Рµ, С‡С‚РѕР± РЅРµ РјРµС€Р°Р»Рё РїРѕРёСЃРєСѓ РєР»Р°СЃС‚РµСЂРѕРІ Рё Р»РёРЅРёР№
             }
         }
     }
@@ -247,7 +247,7 @@ int playSlots() {
         winnings += scatterWinnings;
     }
 
-    // Кластер
+    // РљР»Р°СЃС‚РµСЂ
     for (int row = 0; row < ROWS; ++row) {
         for (int col = 0; col < COLS; ++col) {
             if (!visited[row][col]) {
@@ -269,22 +269,22 @@ int playSlots() {
         }
     }
     std::cout << std::endl;
-    // Линейный выигрыш
+    // Р›РёРЅРµР№РЅС‹Р№ РІС‹РёРіСЂС‹С€
     for (int row = 0; row < ROWS; ++row) {
-        if (megawaysCols[0] > row && !visited[row][0]) { // Проверяем, что строка не часть кластера
+        if (megawaysCols[0] > row && !visited[row][0]) { // РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЃС‚СЂРѕРєР° РЅРµ С‡Р°СЃС‚СЊ РєР»Р°СЃС‚РµСЂР°
             char firstSymbol = megawaysReels[row][0];
             int winningSymbols = 1;
-            bool isLine = true;  
+            bool isLine = true;
             int lineWinnings = 0;
             for (int col = 1; col < COLS; ++col) {
-                if (megawaysCols[col] <= row || megawaysReels[row][col] != firstSymbol || visited[row][col]) { //проверяем посещение
+                if (megawaysCols[col] <= row || megawaysReels[row][col] != firstSymbol || visited[row][col]) { //РїСЂРѕРІРµСЂСЏРµРј РїРѕСЃРµС‰РµРЅРёРµ
                     isLine = false;
                     break;
                 }
                 winningSymbols++;
             }
 
-            if (winningSymbols >= 3 && isLine) { // Проверка линейного выигрыша и что это не часть кластера
+            if (winningSymbols >= 3 && isLine) { // РџСЂРѕРІРµСЂРєР° Р»РёРЅРµР№РЅРѕРіРѕ РІС‹РёРіСЂС‹С€Р° Рё С‡С‚Рѕ СЌС‚Рѕ РЅРµ С‡Р°СЃС‚СЊ РєР»Р°СЃС‚РµСЂР°
                 lineWinnings = bet * LINE_PAYOUT_MULTIPLIERS[winningSymbols - 3];
                 std::cout << "Winning line in " << row + 1 << " ( " << winningSymbols << "of symbol): " << lineWinnings << std::endl;
                 winnings += lineWinnings;
@@ -294,10 +294,10 @@ int playSlots() {
     if (winnings == 0) {
         std::cout << "Total winnings: " << winnings << " carrots. Unlucky for you" << std::endl;
     }
-    else if (winnings<=bet){
+    else if (winnings <= bet) {
         std::cout << "Total winnings: " << winnings << " carrots. Better that nothing!" << std::endl;
     }
-    else if (winnings>bet*2) {
+    else if (winnings > bet * 2) {
         std::cout << "BIG WIN OF: " << winnings << " CARROTS!!! Your luck is incredible!" << std::endl;
     }
     else if (winnings > bet) {
@@ -318,8 +318,38 @@ void displayBetHistory() {
     }
 
     std::string line;
-    // Пропускаем первую строку (баланс)
+    // РџСЂРѕРїСѓСЃРєР°РµРј РїРµСЂРІСѓСЋ СЃС‚СЂРѕРєСѓ (Р±Р°Р»Р°РЅСЃ)
     std::getline(saveFile, line);
+
+
+    const int maxLinesToCheck = 20;
+    bool isEmpty = true;
+    int initialPos = saveFile.tellg(); 
+
+    for (int i = 0; i < maxLinesToCheck; ++i) {
+        if (!std::getline(saveFile, line)) {
+            break; 
+        }
+
+        std::stringstream ss(line);
+        std::string trimmedLine;
+        ss >> trimmedLine;
+
+        if (!trimmedLine.empty()) {
+            isEmpty = false;
+            break;
+        }
+    }
+
+    if (isEmpty) {
+        std::cout << "Game history is empty. Play some games so see some!" << std::endl;
+        saveFile.close();
+        return;
+    }
+
+    saveFile.clear(); 
+    saveFile.seekg(initialPos, std::ios::beg);
+
 
     int stake;
     int winnings;
@@ -327,7 +357,6 @@ void displayBetHistory() {
     bool errorFound = false;
     std::vector<int> betVec;
     std::vector<int> winVec;
-
 
     while (std::getline(saveFile, line)) {
         if (line.empty()) {
@@ -376,6 +405,7 @@ void displayBetHistory() {
             std::cout << std::left << "Bet: " << std::setw(20) << abs(betVec[i]) << "Winnings: " << std::setw(20) << winVec[i] << std::endl;
         }
     }
+
     saveFile.close();
 
 }
@@ -423,6 +453,7 @@ int startGame() {
                 }
             }
             else {
+                clearScreen();
                 std::cout << "Reset cancelled." << std::endl;
             }
             break;

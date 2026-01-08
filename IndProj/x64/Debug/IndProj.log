@@ -6,5 +6,8 @@ C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(245,31): warning
 C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(259,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(260,43): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(288,36): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(365,45): warning C4101: 'e': unreferenced local variable
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(327,20): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(394,45): warning C4101: 'e': unreferenced local variable
+  main.cpp
+  Generating Code...
   IndProj.vcxproj -> C:\Users\Пользователь\Desktop\labs\IndProj\x64\Debug\IndProj.exe
