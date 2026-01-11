@@ -176,15 +176,16 @@ int playSlots() {
     int bet;
     std::cout << "Enter your bet(10-" << current_balance << "): ";
     std::cin >> bet;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "Your bet is " << bet << " carrots" << std::endl;
     // Запрос ставки
-    while (bet <= 0 || bet > current_balance) {
+    while (bet <= 10 || bet > current_balance) {
         if (std::cin.fail()) {
             clearScreen();
             std::cout << "Invalid input" << std::endl;
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            continue;
+           
         }
         else {
             std::cout << "Your bet must be between 10 and " << current_balance << " carrots or enter 0 to exit" << std::endl;
@@ -225,6 +226,7 @@ int playSlots() {
 
     // Вывод
     clearScreen();
+    std::cout << "Your bet is " << bet << " carrots" << std::endl << std::endl;
     std::cout << "--------------------MEGAWAYS-------------------" << std::endl;
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -437,11 +439,11 @@ int startGame() {
         std::cout << "4. Reset Game (and clear save)" << std::endl;
         std::cout << "Enter your choice (1 - 4): ";
         std::cin >> choice;
-
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (std::cin.fail()) {
             clearScreen();
+            std::cin.clear();
             std::cout << "Invalid input" << std::endl;
-            std::cin.clear(); 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
             choice = 0; 
             continue; 
@@ -477,8 +479,7 @@ int startGame() {
         default:
             clearScreen();
             std::cout << "Invalid input. Please enter a number from 1 to 4: " << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            
         }
     } while (choice != 3);
 
