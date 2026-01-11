@@ -2,12 +2,10 @@
 C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(42,45): warning C4101: 'e': unreferenced local variable
 C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(47,41): warning C4101: 'e': unreferenced local variable
 C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(142,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(245,31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(259,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(260,43): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(288,36): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(327,20): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(394,45): warning C4101: 'e': unreferenced local variable
-  main.cpp
-  Generating Code...
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(253,31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(267,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(268,43): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(296,36): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(335,20): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\Users\Пользователь\Desktop\labs\IndProj\func.cpp(402,45): warning C4101: 'e': unreferenced local variable
   IndProj.vcxproj -> C:\Users\Пользователь\Desktop\labs\IndProj\x64\Debug\IndProj.exe

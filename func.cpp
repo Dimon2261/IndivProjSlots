@@ -177,14 +177,22 @@ int playSlots() {
     std::cout << "Enter your bet(10-" << current_balance << "): ";
     std::cin >> bet;
     std::cout << "Your bet is " << bet << " carrots" << std::endl;
-
     // Запрос ставки
     while (bet <= 0 || bet > current_balance) {
-        std::cout << "Not enough carrots!" << std::endl << "Your bet must be between 10 and " << current_balance << " carrots or enter 0 to exit" << std::endl;
-        std::cin >> bet;
-        if (bet == 0) {
+        if (std::cin.fail()) {
             clearScreen();
-            return 0;
+            std::cout << "Invalid input" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+        else {
+            std::cout << "Your bet must be between 10 and " << current_balance << " carrots or enter 0 to exit" << std::endl;
+            std::cin >> bet;
+            if (bet == 0) {
+                clearScreen();
+                return 0;
+            }
         }
     }
     updateSaveFile(-bet);
@@ -426,9 +434,18 @@ int startGame() {
         std::cout << "1. Play Slots" << std::endl;
         std::cout << "2. Display bet history" << std::endl;
         std::cout << "3. Save and Exit" << std::endl;
-        std::cout << "4. Reset Game (and Clear Save)" << std::endl;
+        std::cout << "4. Reset Game (and clear save)" << std::endl;
         std::cout << "Enter your choice (1 - 4): ";
         std::cin >> choice;
+
+        if (std::cin.fail()) {
+            clearScreen();
+            std::cout << "Invalid input" << std::endl;
+            std::cin.clear(); 
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+            choice = 0; 
+            continue; 
+        }
         switch (choice) {
         case 1:
             clearScreen();
